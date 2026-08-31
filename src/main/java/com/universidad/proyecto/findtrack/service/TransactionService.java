@@ -44,7 +44,7 @@ public class TransactionService {
                 .date(transactionRequest.getDate())
                 .build();
 
-        transactionRepository.save(transaction);
+        Transaction transactionSaved = transactionRepository.save(transaction);
 
         CategoryResponseDTO categoryResponse = new CategoryResponseDTO(
                 category.getId(),
@@ -54,12 +54,12 @@ public class TransactionService {
                 category.isDefault());
 
         return new TransactionResponseDTO(
-                transaction.getId(),
-                transaction.getAmount(),
-                transaction.getType(),
-                transaction.getDescription(),
-                transaction.getDate(),
-                transaction.getCreatedAt(),
+                transactionSaved.getId(),
+                transactionSaved.getAmount(),
+                transactionSaved.getType(),
+                transactionSaved.getDescription(),
+                transactionSaved.getDate(),
+                transactionSaved.getCreatedAt(),
                 categoryResponse);
     }
 
@@ -72,7 +72,7 @@ public class TransactionService {
 
         if (!userId.equals(transaction.getUserId())) {
             throw new AccessDeniedException("No tiene permiso para actualizar esta transacción");
-        }
+        } 
 
         Category category = categoryService.getUsableCategory(transactionRequest.getCategoryId(), userId);
 
